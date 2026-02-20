@@ -1,0 +1,24 @@
+bind_addr = "0.0.0.0:8080"
+
+[sqlite]
+path = "./data/cloud-fart.db"
+
+# Uncomment to enable Neo4j projection
+# [neo4j]
+# uri = "127.0.0.1:7687"
+# user = "neo4j"
+# password = "localdevpassword"
+
+[adapters.github_actions]
+enabled = true
+kind = "file"
+
+[adapters.github_actions.options]
+directory = "./fixtures/adapters/github-actions"
+
+[adapters.gitlab_ci]
+enabled = false
+kind = "file"
+
+[adapters.gitlab_ci.options]
+directory = "./fixtures/adapters/gitlab-ci"

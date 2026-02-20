@@ -1,0 +1,10 @@
+{
+  "source": "github-actions",
+  "services": [
+    {"name": "api", "metadata": {"team": "platform"}},
+    {"name": "worker", "metadata": {"team": "platform"}}
+  ],
+  "communications": [
+    {"source": "api", "target": "worker", "protocol": "http", "metadata": {"path": "/jobs"}}
+  ]
+}

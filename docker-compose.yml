@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+  neo4j:
+    image: neo4j:5.24
+    container_name: cloud-fart-neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/localdevpassword
+    volumes:
+      - ./data/neo4j:/data
+
+  sqlite-viewer:
+    image: keinos/sqlite3:latest
+    container_name: cloud-fart-sqlite-shell
+    profiles: ["tools"]
+    volumes:
+      - ./data:/data
+    entrypoint: ["/bin/sh", "-lc", "sleep infinity"]
