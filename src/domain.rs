@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ServiceNode {
@@ -44,37 +44,20 @@ fn dedupe_services(services: Vec<ServiceNode>) -> Vec<ServiceNode> {
 fn dedupe_edges(edges: Vec<CommunicationEdge>) -> Vec<CommunicationEdge> {
     edges
         .into_iter()
+        .filter(|edge| edge.source != edge.target)
         .fold(
             BTreeMap::<(String, String, String), CommunicationEdge>::new(),
             |mut acc, edge| {
-                acc.insert(
-                    (
-                        edge.source.clone(),
-                        edge.target.clone(),
-                        edge.protocol.clone(),
-                    ),
-                    edge,
+                let key = (
+                    edge.source.clone(),
+                    edge.target.clone(),
+                    edge.protocol.clone(),
                 );
+                acc.insert(key, edge);
                 acc
             },
         )
         .into_values()
-        .collect::<Vec<_>>()
-        .into_iter()
-        .filter(|edge| edge.source != edge.target)
-        .collect::<Vec<_>>()
-        .into_iter()
-        .fold(BTreeSet::new(), |mut acc, edge| {
-            acc.insert((edge.source, edge.target, edge.protocol, edge.metadata));
-            acc
-        })
-        .into_iter()
-        .map(|(source, target, protocol, metadata)| CommunicationEdge {
-            source,
-            target,
-            protocol,
-            metadata,
-        })
         .collect()
 }
 

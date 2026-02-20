@@ -42,8 +42,8 @@ async fn main() -> anyhow::Result<()> {
         .adapters
         .iter()
         .filter(|(_, cfg)| cfg.enabled)
-        .filter_map(|(name, cfg)| match cfg.kind {
-            AdapterKind::File => Some(FileTopologyAdapter::from_config(name.clone(), cfg)),
+        .map(|(name, cfg)| match cfg.kind {
+            AdapterKind::File => FileTopologyAdapter::from_config(name.clone(), cfg),
         })
         .collect::<anyhow::Result<Vec<_>>>()?
         .into_iter()
