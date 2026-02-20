@@ -45,6 +45,7 @@ impl<R: GraphRepository + 'static> GraphIngestionService<R> {
         let mut graphs_ingested = 0usize;
 
         for adapter in &self.adapters {
+            tracing::info!(adapter = adapter.name(), "collecting topology payloads");
             let graphs = adapter.collect().await?;
             for graph in graphs {
                 self.ingest(graph).await?;
